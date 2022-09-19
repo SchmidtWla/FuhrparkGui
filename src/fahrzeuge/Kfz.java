@@ -221,7 +221,7 @@ public abstract class Kfz {
 
     }
 
-     public abstract float auslastung();
+    public abstract float auslastung();
 
     public static class AuslastungComparator implements Comparator<Kfz> {
         @Override
