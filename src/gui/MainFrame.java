@@ -38,6 +38,8 @@ public class MainFrame extends JFrame {
         northPanelGrid = new JPanel();
         northPanelGrid.setLayout(new BoxLayout(northPanelGrid, BoxLayout.PAGE_AXIS));
         Tabelle uebersichtPanel = new Tabelle();
+        CustomTableModel model =(CustomTableModel)uebersichtPanel.getTable().getModel();
+        model.addRow((new Object[]{"230", "Peter", "Schneider", 5200} ));
         cardPanel.add(uebersichtPanel.getPanel(), "Uebersicht");
         showedPanel = "Uebersicht";
         MitarbeiterGui mitarbeiterGui = new MitarbeiterGui("Mitarbeiter");
@@ -59,7 +61,7 @@ public class MainFrame extends JFrame {
         submit = new JLabel();
 
         southPanel.add(submit, BorderLayout.WEST);
-        southPanel.add(createApplyButton(), BorderLayout.EAST);
+        southPanel.add(createSwitchButton(), BorderLayout.EAST);
 
         myFrame.setVisible(true);
         System.out.println(myFrame.getContentPane().getLayout());
@@ -73,7 +75,7 @@ public class MainFrame extends JFrame {
 
 
 
-    private JButton createApplyButton() {
+    private JButton createSwitchButton() {
 
         sizeButton = new JButton("Ansicht Wechseln");
         sizeButton.addActionListener((event -> {

@@ -14,7 +14,7 @@ import java.util.Map;
 public class Tabelle {
 
 
-    JTable table;
+    static JTable table;
     static Map<String, Mitarbeiter> map = new HashMap<>();
 
     public static Map<String, Mitarbeiter> getMap() {
@@ -33,7 +33,9 @@ public class Tabelle {
     public Tabelle() {
         createPanel();
     }
-
+    public JTable getTable() {
+        return this.table;
+    }
     private void createPanel() {
         panel = new JPanel();
         panel.setLayout(new BorderLayout(5,5));
@@ -56,10 +58,7 @@ public class Tabelle {
 
         CustomTableModel model = new CustomTableModel();
 
-        for (Map.Entry<String, Mitarbeiter> entry : map.entrySet()) {
-            Mitarbeiter info = entry.getValue();
-            model.addRow(new Object[] {info.getId(), info.getName() });
-        }
+
         table = new JTable(model);
         table.setShowGrid(false);
         JScrollPane scrollpane = new JScrollPane(table);

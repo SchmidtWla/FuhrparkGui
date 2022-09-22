@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 public class CustomTableModel extends DefaultTableModel {
 
     public CustomTableModel() {
-        super(new String[]{"Id", "Name","Vorname", "Gehalt"}, 0);
+        super(new String[]{"Id", "Name", "Vorname", "Gehalt"}, 0);
     }
 
     @Override
@@ -16,13 +16,13 @@ public class CustomTableModel extends DefaultTableModel {
                 clazz = String.class;
                 break;
             case 1:
-                clazz = Double.class;
+                clazz = String.class;
                 break;
             case 2:
-                clazz = Boolean.class;
+                clazz = String.class;
                 break;
             case 3:
-                clazz = Boolean.class;
+                clazz = Double.class;
                 break;
 
         }

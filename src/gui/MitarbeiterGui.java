@@ -10,7 +10,8 @@ public class MitarbeiterGui {
     JPanel panel;
     JTextField textField;
     JSpinner spinner;
-
+    JPanel mitarbeiterEingabePanel;
+    JComboBox comboBox;
     public MitarbeiterGui(String name) {
         this.name = name;
         createPanel();
@@ -26,10 +27,22 @@ public class MitarbeiterGui {
         JLabel label = new JLabel(this.name);
         label.setForeground(Color.BLACK);
         panel.add(label);
+
+
+        createComboBox();
+        panel.add(comboBox);
         createMitarbeiterPanel();
         panel.setVisible(true);
     }
 
+    private void createComboBox() {
+
+        String[] mitarbeiter = {"Schichtarbeiter", "Büroarbeiter", "Manager"};
+        comboBox = new JComboBox(mitarbeiter);
+        comboBox.addActionListener(e -> {
+
+        });
+    }
     private Border createOuterBorder(String title) {
         Border dateEmptyOuterBorder = BorderFactory.createEmptyBorder(5, 10, 10, 10);
         Border dateOuterBorder = BorderFactory.createTitledBorder(null, title, 0, 0, null, Color.BLACK);
@@ -40,10 +53,10 @@ public class MitarbeiterGui {
 
     private void createMitarbeiterPanel() {
         // North Panel Parameter
-        JPanel mitarbeiterEingabePanel = new JPanel();
+        mitarbeiterEingabePanel = new JPanel();
         mitarbeiterEingabePanel.setLayout(new BoxLayout(mitarbeiterEingabePanel, BoxLayout.PAGE_AXIS));
-        JPanel distanzPanel = new JPanel(new BorderLayout(5, 5));
-        mitarbeiterEingabePanel.add(distanzPanel);
+        JPanel mitarbeiterParameter = new JPanel(new BorderLayout(5, 5));
+        mitarbeiterEingabePanel.add(mitarbeiterParameter);
         Border outerBorderParameter = createOuterBorder("Eingabe für " + name + ": ");
         mitarbeiterEingabePanel.setBorder(outerBorderParameter);
         panel.add(mitarbeiterEingabePanel);
@@ -51,12 +64,12 @@ public class MitarbeiterGui {
         // GridLayout ParameterNorthEast
         JPanel parameterNorthEastPanel = new JPanel(new GridLayout(4, 1, 1, 5));
 
-        distanzPanel.add(parameterNorthEastPanel, BorderLayout.WEST);
+        mitarbeiterParameter.add(parameterNorthEastPanel, BorderLayout.WEST);
 
         // GridLayout ParameterNorthCenter
         JPanel parameterNorthCenterPanel = new JPanel(new GridLayout(4, 1, 1, 5));
 
-        distanzPanel.add(parameterNorthCenterPanel, BorderLayout.CENTER);
+        mitarbeiterParameter.add(parameterNorthCenterPanel, BorderLayout.CENTER);
 
         // Create IdLabel
         JLabel IdLabel = new JLabel("ID: ");
@@ -95,8 +108,16 @@ public class MitarbeiterGui {
         JTextField gehaltField = new JTextField();
         parameterNorthCenterPanel.add(gehaltField);
 
-        JButton button = new JButton("Submit");
-        panel.add(button);
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(e -> {
+         CustomTableModel model =  (CustomTableModel)Tabelle.table.getModel();
+         model.addRow(new Object[] {idField.getText(), nameField.getText(), vornameField.getText(),Double.parseDouble(gehaltField.getText())});
+         idField.setText("");
+         nameField.setText("");
+         vornameField.setText("");
+         gehaltField.setText("");
+        });
+        panel.add(submitButton);
     }
 }
 
