@@ -14,12 +14,11 @@ public class MainFrame extends JFrame {
     JPanel mainPanel;
     JPanel cardPanel;
     CardLayout cardLayout;
-    private static String showedPanel;
+    private String showedPanel;
+    private String previousPanel;
+    JComboBox comboBox;
 
 
-    public static String getShowedPanel() {
-        return showedPanel;
-    }
 
     public MainFrame() {
         this.myFrame = new JFrame("index");
@@ -30,6 +29,7 @@ public class MainFrame extends JFrame {
 
 
         mainPanel = new JPanel(new BorderLayout(5, 5));
+
 //        myFrame.add(tree, BorderLayout.WEST);
         // BoxLayout NorthPanel
         cardLayout = new MyCardLayout();
@@ -37,14 +37,23 @@ public class MainFrame extends JFrame {
 
         northPanelGrid = new JPanel();
         northPanelGrid.setLayout(new BoxLayout(northPanelGrid, BoxLayout.PAGE_AXIS));
+        createComboBox();
+        northPanelGrid.add(comboBox);
         Tabelle uebersichtPanel = new Tabelle();
-        CustomTableModel model =(CustomTableModel)uebersichtPanel.getTable().getModel();
-        model.addRow((new Object[]{"230", "Peter", "Schneider", 5200} ));
         cardPanel.add(uebersichtPanel.getPanel(), "Uebersicht");
         showedPanel = "Uebersicht";
-        MitarbeiterGui mitarbeiterGui = new MitarbeiterGui("Mitarbeiter");
-        cardPanel.add(mitarbeiterGui.getPanel(), "Mitarbeiter");
+        previousPanel = "Mitarbeiter";
+        MitarbeiterGui mitarbeiter = new MitarbeiterGui("Mitarbeiter", false, false, false, false);
+        MitarbeiterGui bueroarbeiter = new MitarbeiterGui("Büroarbeiter",true, false, false, false );
+        MitarbeiterGui manager = new MitarbeiterGui("Manager",true, true, false, false );
+        MitarbeiterGui schichtarbeiter = new MitarbeiterGui("Schichtarbeiter",false, false, true, true );
+
+        cardPanel.add(mitarbeiter.getPanel(), "Mitarbeiter");
+        cardPanel.add(bueroarbeiter.getPanel(), "Büroarbeiter");
+        cardPanel.add(manager.getPanel(), "Manager");
+        cardPanel.add(schichtarbeiter.getPanel(), "Schichtarbeiter");
         mainPanel.add(cardPanel, BorderLayout.NORTH);
+        mainPanel.add(comboBox, BorderLayout.SOUTH);
         myFrame.add(mainPanel, BorderLayout.CENTER);
 
 
@@ -80,16 +89,26 @@ public class MainFrame extends JFrame {
         sizeButton = new JButton("Ansicht Wechseln");
         sizeButton.addActionListener((event -> {
             if(showedPanel.equals("Uebersicht")) {
-                cardLayout.show(cardPanel, "Mitarbeiter");
-                showedPanel = "Mitarbeiter";
+                cardLayout.show(cardPanel, previousPanel);
+                showedPanel = previousPanel;
             } else {
                 cardLayout.show(cardPanel, "Uebersicht");
+                previousPanel = showedPanel;
                 showedPanel = "Uebersicht";
             }
         }));
 
         return sizeButton;
 
+    }
+
+    private void createComboBox() {
+
+        String[] mitarbeiter = {"Büroarbeiter", "Manager", "Schichtarbeiter"};
+        comboBox = new JComboBox(mitarbeiter);
+        comboBox.addActionListener(e -> {
+            cardLayout.show(cardPanel, (String)comboBox.getSelectedItem());
+        });
     }
 
     public static class MyCardLayout extends CardLayout {

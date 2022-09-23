@@ -11,9 +11,17 @@ public class MitarbeiterGui {
     JTextField textField;
     JSpinner spinner;
     JPanel mitarbeiterEingabePanel;
-    JComboBox comboBox;
-    public MitarbeiterGui(String name) {
+
+    private final boolean gehalt;
+    private final boolean bonussatz;
+    private final boolean stunden;
+    private final boolean stundensatz;
+    public MitarbeiterGui(String name, boolean gehalt, boolean bonussatz, boolean stunden, boolean stundensatz) {
         this.name = name;
+        this.gehalt = gehalt;
+        this.bonussatz = bonussatz;
+        this.stunden = stunden;
+        this.stundensatz = stundensatz;
         createPanel();
     }
 
@@ -28,21 +36,11 @@ public class MitarbeiterGui {
         label.setForeground(Color.BLACK);
         panel.add(label);
 
-
-        createComboBox();
-        panel.add(comboBox);
         createMitarbeiterPanel();
         panel.setVisible(true);
     }
 
-    private void createComboBox() {
 
-        String[] mitarbeiter = {"Schichtarbeiter", "Büroarbeiter", "Manager"};
-        comboBox = new JComboBox(mitarbeiter);
-        comboBox.addActionListener(e -> {
-
-        });
-    }
     private Border createOuterBorder(String title) {
         Border dateEmptyOuterBorder = BorderFactory.createEmptyBorder(5, 10, 10, 10);
         Border dateOuterBorder = BorderFactory.createTitledBorder(null, title, 0, 0, null, Color.BLACK);
@@ -62,12 +60,12 @@ public class MitarbeiterGui {
         panel.add(mitarbeiterEingabePanel);
 
         // GridLayout ParameterNorthEast
-        JPanel parameterNorthEastPanel = new JPanel(new GridLayout(4, 1, 1, 5));
+        JPanel parameterNorthEastPanel = new JPanel(new GridLayout(5, 1, 1, 5));
 
         mitarbeiterParameter.add(parameterNorthEastPanel, BorderLayout.WEST);
 
         // GridLayout ParameterNorthCenter
-        JPanel parameterNorthCenterPanel = new JPanel(new GridLayout(4, 1, 1, 5));
+        JPanel parameterNorthCenterPanel = new JPanel(new GridLayout(5, 1, 1, 5));
 
         mitarbeiterParameter.add(parameterNorthCenterPanel, BorderLayout.CENTER);
 
@@ -83,9 +81,7 @@ public class MitarbeiterGui {
         JLabel vornameLabel = new JLabel("Vorname: ");
         parameterNorthEastPanel.add(vornameLabel);
 
-        // Create gehaltLabel
-        JLabel gehaltLabel = new JLabel("Gehalt: ");
-        parameterNorthEastPanel.add(gehaltLabel);
+
 
         // Create JTextField
         JPanel buttonPanel = new JPanel();
@@ -104,18 +100,55 @@ public class MitarbeiterGui {
         JTextField vornameField = new JTextField();
         parameterNorthCenterPanel.add(vornameField);
 
-        //Create gehaltField
-        JTextField gehaltField = new JTextField();
-        parameterNorthCenterPanel.add(gehaltField);
+        if(this.gehalt) {
+
+            // Create gehaltLabel
+            JLabel gehaltLabel = new JLabel("Gehalt: ");
+            parameterNorthEastPanel.add(gehaltLabel);
+
+            //Create gehaltField
+            JTextField gehaltField = new JTextField();
+            parameterNorthCenterPanel.add(gehaltField);
+        }
+
+        if(stundensatz) {
+            // Create stundensatzLabel
+            JLabel stundensatzLabel = new JLabel("Stundensatz: ");
+            parameterNorthEastPanel.add(stundensatzLabel);
+
+            //Create gehaltField
+            JTextField stundensatzField = new JTextField();
+            parameterNorthCenterPanel.add(stundensatzField);
+        }
+
+        if(bonussatz) {
+            // Create bonussatzLabel
+            JLabel bonussatzLabel = new JLabel("Bonussatz: ");
+            parameterNorthEastPanel.add(bonussatzLabel);
+
+            //Create bonussatzField
+            JTextField bonussatzField = new JTextField();
+            parameterNorthCenterPanel.add(bonussatzField);
+        }
+        if(stunden) {
+            // Create stundenLabel
+            JLabel stundenLabel = new JLabel("Gehalt: ");
+            parameterNorthEastPanel.add(stundenLabel);
+
+            //Create stundenField
+            JTextField stundenField = new JTextField();
+            parameterNorthCenterPanel.add(stundenField);
+        }
+
 
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
          CustomTableModel model =  (CustomTableModel)Tabelle.table.getModel();
-         model.addRow(new Object[] {idField.getText(), nameField.getText(), vornameField.getText(),Double.parseDouble(gehaltField.getText())});
+         model.addRow(new Object[] {idField.getText(), nameField.getText(), vornameField.getText(),0.0});
          idField.setText("");
          nameField.setText("");
          vornameField.setText("");
-         gehaltField.setText("");
+//         gehaltField.setText("");
         });
         panel.add(submitButton);
     }
